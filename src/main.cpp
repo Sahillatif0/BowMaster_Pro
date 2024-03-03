@@ -1,13 +1,24 @@
+#include<iostream>
 #include <SFML/Graphics.hpp>
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Game");
+    sf::Texture texture;
+    if (!texture.loadFromFile("assets/p.png"))
+    {
+        std::cout << "Error loading texture" << std::endl;
+        return -1;
+    }
 
-    sf::CircleShape circle(50);
-    circle.setFillColor(sf::Color::Green);
+    sf::Sprite circle;
+    circle.setTexture(texture);
+    circle.setScale(0.1, 0.1);
+    circle.setPosition(0, 0);
+    // sf::CircleShape circle(50);
+    // circle.setFillColor(sf::Color::Red);
 
-    sf::Vector2f velocity(0.1f, 0.1f);
+    sf::Vector2f velocity(0.2f, 0.2f);
 
     while (window.isOpen())
     {
@@ -18,18 +29,20 @@ int main()
                 window.close();
         }
 
-        if ((circle.getPosition().x + circle.getRadius() > window.getSize().x && velocity.x > 0) ||
-            (circle.getPosition().x - circle.getRadius() < 0 && velocity.x < 0))
+        if ((circle.getPosition().x > window.getSize().x && velocity.x > 0) ||
+            (circle.getPosition().x < 0 && velocity.x < 0))
         {
+            // circle.setRadius(circle.getRadius()-1);
             velocity.x = -velocity.x;
         }
 
-        if ((circle.getPosition().y + circle.getRadius() > window.getSize().y && velocity.y > 0) ||
-            (circle.getPosition().y - circle.getRadius() < 0 && velocity.y < 0))
+        if ((circle.getPosition().y > window.getSize().y && velocity.y > 0) ||
+            (circle.getPosition().y < 0 && velocity.y < 0))
         {
+            // circle.setRadius(circle.getRadius()-1);
+            std::cout<<circle.getPosition().x<<std::endl;
             velocity.y = -velocity.y;
         }
-
         circle.move(velocity);
 
         window.clear();
